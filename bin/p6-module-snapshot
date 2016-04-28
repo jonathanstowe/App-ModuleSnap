@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use META6;
+use App::ModuleSnap;
 
 multi sub MAIN(Str :$directory = '.') {
 
@@ -8,33 +8,15 @@ multi sub MAIN(Str :$directory = '.') {
     my $name = @parts.join('::');
     my $dir-name = @parts.join('-');
 
-    my $perl = $*PERL.version;
-    my $version = v0.0.1;
-    my $auth = 'private:snapshot';
-    my $source-url = 'urn:no-install';
-
-    my $meta = META6.new(:$name, :$perl, :$version, :$auth, :$source-url);
-
     my $dir = $directory.IO.child($dir-name);
 
-    for $*REPO.repo-chain -> $r {
-        if $r.can('prefix') {
-            if $r.prefix.child('dist').e {
-                for $r.prefix.child('dist').dir -> $d {
-                    my $dist-data = from-json($d.slurp);
-                    my $dist =  Distribution.new(|$dist-data);
-                    if !$dist.auth.defined || $dist.auth ne any('perl', 'private:snapshot') {
-                        $meta.depends.append: $dist.name;
-                    }
-    
-                }
-            }
-        }
-    }
+    my META6 $meta = App::ModuleSnap.get-meta(:$name);
 
     if !$dir.d {
         $dir.mkdir;
     }
+
     $dir.child('META6.json').spurt($meta.to-json);
+    say "the snapshot has been written in the directory $dir";
 }
 # vim: expandtab shiftwidth=4 ft=perl6
