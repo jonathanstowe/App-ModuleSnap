@@ -17,7 +17,7 @@ my $meta;
 lives-ok { $meta = App::ModuleSnap.get-meta(name => 'Foo::Bar') }, "get-meta";
 isa-ok $meta, META6, "and it is a META6";
 is $meta.name, 'Foo::Bar', "and the name is right";
-is $meta.perl, $*PERL.version, "perl version is correct";
+is $meta.perl-version, $*PERL.version, "perl version is correct";
 is $meta.depends.elems, @dists.elems, "got the right number of dists";
 
 done-testing;

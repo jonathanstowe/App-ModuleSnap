@@ -38,7 +38,7 @@ allows for easier extension and doesn't pollute the consumers namespace.
 
 =head2 method create-meta
 
-    method create-meta(Str :$name!, Version :$perl = $*PERL.version, Version :$version = v0.0.1) returns META6
+    method create-meta(Str :$name!, Version :$perl-version = $*PERL.version, Version :$version = v0.0.1) returns META6
 
 This returns a C<META6> object initialised with the minimal attributes for it to work.
 The C<name> must be provided.
@@ -53,7 +53,7 @@ list of the 'auth' strings that should be skipped can be provided.
 
 =head2 method get-meta
 
-    method get-meta(Str :$name!, Version :$perl = $*PERL.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6
+    method get-meta(Str :$name!, Version :$perl-version = $*PERL.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6
 
 This returns the fully populated META data that will be serialised to create the
 META6.json file.  C<name> is required (and will form the name of the 
@@ -64,16 +64,16 @@ sensible for the application.
 
 class App::ModuleSnap {
     use META6;
-    method get-meta(Str :$name!, Version :$perl = $*PERL.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6 {
-        my $meta = self.create-meta(:$name, :$perl, :$version);
+    method get-meta(Str :$name!, Version :$perl-version = $*PERL.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6 {
+        my $meta = self.create-meta(:$name, :$perl-version, :$version);
         $meta.depends = self.get-dists(@exclude-auth).map(*.name).list;
         $meta;
     }
 
-    method create-meta(Str :$name!, Version :$perl = $*PERL.version, Version :$version = v0.0.1) returns META6 {
+    method create-meta(Str :$name!, Version :$perl-version = $*PERL.version, Version :$version = v0.0.1) returns META6 {
         my Str $auth        = 'private:snapshot';
         my Str $source-url  = 'urn:no-install';
-        my $meta = META6.new(:$name, :$perl, :$version, :$auth, :$source-url);
+        my $meta = META6.new(:$name, :$perl-version, :$version, :$auth, :$source-url);
         return $meta;
     }
 
