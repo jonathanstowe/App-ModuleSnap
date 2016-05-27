@@ -12,13 +12,16 @@
 		"App::ModuleSnap" : "lib/App/ModuleSnap.pm"
   },
   "depends": [
+      "JSON::Fast",
 		"META6"
   ],
   "tags": [ "package", "snapshot", "utility" ],
   "license": "perl",
-  "test-depends": [ ],
+  "test-depends": [ 
+     "JSON::Fast"
+  ],
   "description": "Take a snapshot of the installed modules for later reinstallation",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "meta6": "0",
   "authors": [
     "Jonathan Stowe <jns+gh@gellyfish.co.uk>"

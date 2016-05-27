@@ -3,6 +3,7 @@
 use v6.c;
 
 use Test;
+use JSON::Fast;
 
 use App::ModuleSnap;
 
