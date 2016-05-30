@@ -52,7 +52,7 @@ Whilst I haven't tested this it should work equally as well with ```zef```.
 This is very simple, but if you have any suggestions/patches etc please send them
 via github at https://github.com/jonathanstowe/App-ModuleSnap/issues .
 
-## License and Copyright
+## Licence and Copyright
 
 This is free software. Please see the [LICENCE](LICENCE) file in the distribution.
 
