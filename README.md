@@ -54,7 +54,7 @@ via github at https://github.com/jonathanstowe/App-ModuleSnap/issues .
 
 ## License and Copyright
 
-This is free software. Please see the [LICENSE](LICENSE) file in the distribution.
+This is free software. Please see the [LICENCE](LICENCE) file in the distribution.
 
 © Jonathan Stowe 2016
 
