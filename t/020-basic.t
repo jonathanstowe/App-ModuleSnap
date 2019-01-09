@@ -1,6 +1,6 @@
 #!perl6
 
-use v6.c;
+use v6;
 
 use Test;
 use JSON::Fast;
@@ -10,9 +10,11 @@ use META6;
 
 my @dists;
 
-lives-ok { @dists = App::ModuleSnap.get-dists },"get-dists";
+lives-ok {
+    @dists = App::ModuleSnap.get-dists;
+},"get-dists";
 ok @dists.elems > 0, "must have some dists";
-nok @dists.grep({$_.name eq 'CORE'}), "and we didn't get CORE";
+nok @dists.grep({$_.meta<name> eq 'CORE'}), "and we didn't get CORE";
 my $meta;
 lives-ok { $meta = App::ModuleSnap.get-meta(name => 'Foo::Bar') }, "get-meta";
 isa-ok $meta, META6, "and it is a META6";

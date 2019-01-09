@@ -67,7 +67,7 @@ class App::ModuleSnap {
     use META6;
     method get-meta(Str :$name!, Version :$perl-version = $*PERL.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6 {
         my $meta = self.create-meta(:$name, :$perl-version, :$version);
-        $meta.depends = self.get-dists(@exclude-auth).map(*.name).list;
+        $meta.depends = self.get-dists(@exclude-auth).map(*.meta<name>).list;
         $meta;
     }
 
@@ -85,8 +85,8 @@ class App::ModuleSnap {
                 if $r.prefix.add('dist').e {
                     for $r.prefix.add('dist').dir -> $d {
                         my $dist-data = from-json($d.slurp);
-                        my $dist =  Distribution.new(|$dist-data);
-                        if !$dist.auth.defined || $dist.auth ne any(@exclude-auth.list) {
+                        my $dist =  Distribution::Hash.new($dist-data, prefix => $r.prefix );
+                        if !$dist.meta<auth>.defined || $dist.meta<auth> ne any(@exclude-auth.list) {
                             @dists.append: $dist;
                         }
                     }

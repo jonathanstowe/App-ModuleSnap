@@ -1,3 +1,5 @@
+v0.0.11     Wed  9 Jan 19:52:20 GMT 2019
+	* Distribution changed	
 v0.0.10     Mon 30 Apr 12:44:21 BST 2018
     * Use .add rather than .child on paths
 v0.0.9		Tue Apr 18 20:45:02 2017 +0100 
