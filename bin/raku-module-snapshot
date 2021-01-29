@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use v6;
 
@@ -19,7 +19,7 @@ p6-module-snapshot - create a distribution to reinstall installed modules
 =head1 DESCRIPTION
 
 This provides a simple mechanism to take a snapshot of the installed
-modules for your rakudo perl 6 installation as a distribution with
+modules for your rakudo installation as a distribution with
 no installables just dependencies.
 
 The data is collected as a META6.json in a timestamped sub-directory
@@ -37,7 +37,7 @@ And the modules will be installed. You can of course copy the directory
 to another machine or back it up or something.
 
 This can be useful in two separate scenarios - firstly that you need to
-do a completely fresh or side-by-side Perl 6 installation on your
+do a completely fresh or side-by-side Raku installation on your
 system, or you need to duplicate the installed modules from one
 system on another.
 
@@ -63,4 +63,4 @@ multi sub MAIN(Str :$directory = '.') {
     $dir.add('META6.json').spurt($meta.to-json);
     say "the snapshot has been written in the directory $dir";
 }
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

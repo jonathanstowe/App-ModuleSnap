@@ -27,7 +27,7 @@
       "children": [
         {
           "type": "file",
-          "name": "p6-module-snapshot"
+          "name": "raku-module-snapshot"
         }
       ],
       "name": "bin",

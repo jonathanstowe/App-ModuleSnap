@@ -1,4 +1,4 @@
-#!perl6
+#!raku
 
 use v6;
 
@@ -19,8 +19,8 @@ my $meta;
 lives-ok { $meta = App::ModuleSnap.get-meta(name => 'Foo::Bar') }, "get-meta";
 isa-ok $meta, META6, "and it is a META6";
 is $meta.name, 'Foo::Bar', "and the name is right";
-is $meta.perl-version, $*PERL.version, "perl version is correct";
+is $meta.raku-version, $*RAKU.version, "perl version is correct";
 is $meta.depends.elems, @dists.elems, "got the right number of dists";
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku
