@@ -6,13 +6,14 @@ use v6;
 
 =head1 NAME
 
-p6-module-snapshot - create a distribution to reinstall installed modules
+raku-module-snapshot - create a distribution to reinstall installed modules
+
 
 =head1 SYNOPSIS
 
 =begin code
 
-    p6-module-snapshot [--directory=<.>]
+    raku-module-snapshot [--directory=<.>]
 
 =end code
 
@@ -27,10 +28,6 @@ of the current directory (or the directory specified on the command
 line,) and you can at some later point change directory into that
 directory and do
 
-     panda install .
-
-or
-
      zef install .
 
 And the modules will be installed. You can of course copy the directory
@@ -44,23 +41,5 @@ system on another.
 =end pod
 
 use App::ModuleSnap;
-use META6;
 
-multi sub MAIN(Str :$directory = '.') {
-
-    my @parts = 'Snapshot', 'Auto', DateTime.now.Str.subst(/<[:+.-]>/,"", :g);
-    my $name = @parts.join('::');
-    my $dir-name = @parts.join('-');
-
-    my $dir = $directory.IO.child($dir-name);
-
-    my META6 $meta = App::ModuleSnap.get-meta(:$name);
-
-    if !$dir.d {
-        $dir.mkdir;
-    }
-
-    $dir.add('META6.json').spurt($meta.to-json);
-    say "the snapshot has been written in the directory $dir";
-}
 # vim: expandtab shiftwidth=4 ft=raku

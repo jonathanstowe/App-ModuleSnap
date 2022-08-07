@@ -65,31 +65,74 @@ sensible for the application.
 class App::ModuleSnap {
     use JSON::Fast;
     use META6;
-    method get-meta(Str :$name!, Version :$raku-version = $*RAKU.version, Version :$version = v0.0.1, :@exclude-auth = <perl private:snapshot>) returns META6 {
+
+    my $auth     = 'private:snapshot';
+
+    has Str $.auth is rw = $auth;
+
+    my @excludes = ('perl', $auth );
+
+    has Str @.exclude-auths is rw = @excludes;
+
+    my @repos = <site vendor core>;
+
+    has Str @.include-repositories is rw = @repos;
+
+    sub timestamp-part( --> Str ) {
+        DateTime.now.Str.subst(/<[:+.-]>/,"", :g);
+    }
+
+    sub auto-name-parts( --> Positional ) {
+        ('Snapshot', 'Auto', timestamp-part() );
+    }
+
+    multi sub MAIN(IO() :$directory = '.') is export {
+
+        my @parts = auto-name-parts();
+        my Str $name = @parts.join('::');
+        my Str $dir-name = @parts.join('-');
+
+        my IO::Path $dir = $directory.add($dir-name);
+
+        my META6 $meta = App::ModuleSnap.get-meta(:$name);
+
+        if !$dir.d {
+            $dir.mkdir;
+        }
+
+        $dir.add('META6.json').spurt($meta.to-json);
+        say "the snapshot has been written in the directory $dir";
+    }
+
+    proto get-meta { * }
+
+    multi method get-meta(App::ModuleSnap:U: Str :$name!, Version :$raku-version = $*RAKU.version, Version :$version = v0.0.1, :@exclude-auth = @excludes --> META6 ) {
         my $meta = self.create-meta(:$name, :$raku-version, :$version);
         $meta.depends = self.get-dists(@exclude-auth).map(*.meta<name>).list;
         $meta;
     }
 
-    method create-meta(Str :$name!, Version :$raku-version = $*RAKU.version, Version :$version = v0.0.1) returns META6 {
+    proto create-meta { * }
+
+    multi method create-meta(App::ModuleSnap:U: Str :$name!, Version :$raku-version = $*RAKU.version, Version :$version = v0.0.1 --> META6 ) {
         my Str $auth        = 'private:snapshot';
         my Str $source-url  = 'urn:no-install';
         my $meta = META6.new(:$name, :$raku-version, :$version, :$auth, :$source-url);
         return $meta;
     }
 
-    method get-dists(@exclude-auth = <raku perl private:snapshot>) {
+    method get-repos( --> Iterable ) {
+        $*REPO.repo-chain.grep(CompUnit::Repository::Installation);
+    }
+
+    proto get-dists { * }
+
+    multi method get-dists(App::ModuleSnap:U: @exclude-auth = @excludes --> Iterable ) {
         my @dists;
-        for $*REPO.repo-chain -> $r {
-            if $r.can('prefix') {
-                if $r.prefix.add('dist').e {
-                    for $r.prefix.add('dist').dir -> $d {
-                        my $dist-data = from-json($d.slurp);
-                        my $dist =  Distribution::Hash.new($dist-data, prefix => $r.prefix );
-                        if !$dist.meta<auth>.defined || $dist.meta<auth> ne any(@exclude-auth.list) {
-                            @dists.append: $dist;
-                        }
-                    }
+        for self.get-repos -> $r {
+            for $r.installed -> $dist {
+                if !$dist.meta<auth>.defined || $dist.meta<auth> ne any(@exclude-auth.list) {
+                    @dists.append: $dist;
                 }
             }
         }
