@@ -130,7 +130,7 @@ class App::ModuleSnap {
     multi method get-dists(App::ModuleSnap:U: @exclude-auth = @excludes --> Iterable ) {
         my @dists;
         for self.get-repos -> $r {
-            for $r.installed -> $dist {
+            for $r.installed.grep(*.defined) -> $dist {
                 if !$dist.meta<auth>.defined || $dist.meta<auth> ne any(@exclude-auth.list) {
                     @dists.append: $dist;
                 }
