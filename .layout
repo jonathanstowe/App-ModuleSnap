@@ -41,7 +41,7 @@
           "children": [
             {
               "type": "file",
-              "name": "ModuleSnap.pm"
+              "name": "ModuleSnap.rakumod"
             }
           ],
           "name": "App",

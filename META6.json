@@ -12,14 +12,12 @@
   ],
   "description": "Take a snapshot of the installed modules for later reinstallation",
   "provides": {
-    "App::ModuleSnap": "lib/App/ModuleSnap.pm"
+    "App::ModuleSnap": "lib/App/ModuleSnap.rakumod"
   },
-  "version": "0.0.13",
+  "version": "0.0.14",
   "auth": "zef:jonathanstowe",
   "source-url": "git://github.com/jonathanstowe/App-ModuleSnap.git",
   "meta-version": "1",
-  "build-depends": [
-  ],
   "tags": [
     "package",
     "snapshot",
